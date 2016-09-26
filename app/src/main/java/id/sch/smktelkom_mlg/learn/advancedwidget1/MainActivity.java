@@ -2,9 +2,11 @@ package id.sch.smktelkom_mlg.learn.advancedwidget1;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -53,11 +55,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addEditText(int jumlah) {
-
+        llAnak.removeAllViews();
+        for (int i = 1; i <= jumlah; i++) {
+            View v = LayoutInflater.from(this).inflate(R.layout.layout_anak, llAnak, false);
+            v.setTag("Anak" + i);
+            llAnak.addView(v);
+        }
         }
 
     private void doProses() {
+        int jumlah = (int) spJumlah.getSelectedItem();
+        String hasil = "";
+        for (int i = 1; i <= jumlah; i++) {
+            LinearLayout llNow = (LinearLayout) llAnak.findViewWithTag("Anak" + i);
 
+            EditText etNama = (EditText) llNow.findViewById(R.id.editTextNama);
+            EditText etUmur = (EditText) llNow.findViewById(R.id.editTextUmur);
+
+            String nama = etNama.getText().toString().trim();
+            String umur = etUmur.getText().toString();
+
+            if (umur.isEmpty())
+                umur = "0";
+            if (!nama.isEmpty())
+                hasil += "Anak ke-" + i + ": " + nama + " umur " + umur + " tahum\n";
+
+        }
+        tvHasil.setText(hasil);
     }
 
 }
